@@ -1,0 +1,145 @@
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Name = "AutoGoalkeeper"
+gui.ResetOnSpawn = false  -- This prevents the GUI from resetting when the player respawns
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- Modern Draggable Button Design
+local toggle = Instance.new("TextButton")
+toggle.Name = "MainButton"
+toggle.Size = UDim2.new(0, 160, 0, 60)
+toggle.Position = UDim2.new(0.05, 0, 0.2, 0)
+toggle.Text = "Auto Goalkeeper: OFF"
+toggle.TextScaled = true
+toggle.Font = Enum.Font.GothamBlack
+toggle.TextColor3 = Color3.new(1, 1, 1)
+toggle.ZIndex = 2
+
+-- Visual Elements
+local gradient = Instance.new("UIGradient")
+gradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 0, 0))
+})
+gradient.Rotation = 90
+gradient.Parent = toggle
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = toggle
+
+local stroke = Instance.new("UIStroke")
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.Color = Color3.new(0, 0, 0)
+stroke.Thickness = 3
+stroke.Parent = toggle
+
+local gloss = Instance.new("Frame")
+gloss.Size = UDim2.new(1, 0, 0.25, 0)
+gloss.Position = UDim2.new(0, 0, 0, 0)
+gloss.BackgroundTransparency = 0.85
+gloss.BackgroundColor3 = Color3.new(1, 1, 1)
+gloss.BorderSizePixel = 0
+gloss.ZIndex = 3
+gloss.Parent = toggle
+
+-- Dragging Mechanism
+local dragging, dragInput, dragStart, startPos
+
+toggle.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = toggle.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+toggle.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        local delta = input.Position - dragStart
+        toggle.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+toggle.Parent = gui
+
+-- Original Functionality
+local enabled = false
+toggle.MouseButton1Click:Connect(function()
+    enabled = not enabled
+    toggle.Text = "Auto Goalkeeper: " .. (enabled and "ON" or "OFF")
+    gradient.Color = enabled and ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 150, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 100, 0))
+    }) or ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 0, 0))
+    })
+end)
+
+local function getBall()
+    return workspace:FindFirstChild("ball")
+end
+
+local lastTouchPlayer = nil
+local ball = getBall()
+
+if ball and ball:IsA("BasePart") then
+    ball.Touched:Connect(function(hit)
+        local char = hit:FindFirstAncestorOfClass("Model")
+        if char and game.Players:GetPlayerFromCharacter(char) then
+            lastTouchPlayer = game.Players:GetPlayerFromCharacter(char)
+        end
+    end)
+end
+
+local function isEnemy(plr)
+    return plr ~= player and plr.Team ~= player.Team
+end
+
+task.spawn(function()
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+
+    while true do  
+        if enabled then  
+            ball = getBall()
+            if ball and lastTouchPlayer and isEnemy(lastTouchPlayer) then
+                if ball.Velocity.Magnitude > 25 then
+                    local char = player.Character or player.CharacterAdded:Wait()
+                    local hrp = char:WaitForChild("HumanoidRootPart")
+                    local originalCFrame = hrp.CFrame
+                    local startTime = tick()
+
+                    while enabled and ball.Velocity.Magnitude > 6 and tick() - startTime < 1 and (ball.Position - hrp.Position).Magnitude < 55 do
+                        local predicted = ball.Position + ball.Velocity * 0.05
+                        hrp.CFrame = CFrame.new(predicted)
+
+                        for _, key in ipairs({Enum.KeyCode.X, Enum.KeyCode.Q, Enum.KeyCode.E}) do
+                            VirtualInputManager:SendKeyEvent(true, key, false, game)
+                            VirtualInputManager:SendKeyEvent(false, key, false, game)
+                            task.wait(0.01)
+                        end
+
+                        task.wait(0.005)
+                    end
+
+                    hrp.CFrame = originalCFrame
+                    lastTouchPlayer = nil
+                end
+            end
+        end
+        task.wait(0.05)
+    end
+end)
